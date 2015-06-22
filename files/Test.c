@@ -1,3 +1,7 @@
-int main () {
-    printf("%s\n", "Hello world!");
+#include <stdio.h>
+
+f(x, y);
+
+main() {
+  printf("%s\n", "Hi");
 }
