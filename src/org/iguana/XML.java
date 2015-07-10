@@ -2,11 +2,11 @@ package org.iguana;
 
 import java.io.File;
 
-import org.iguana.datadependent.util.IguanaRunner;
 import org.iguana.grammar.Grammar;
 import org.iguana.grammar.symbol.Nonterminal;
 import org.iguana.grammar.symbol.Start;
 import org.iguana.grammar.transformation.EBNFToBNF;
+import org.iguana.util.IguanaRunner;
 
 public class XML {
 	
