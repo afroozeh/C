@@ -26,23 +26,23 @@ public class Java {
 	public static void main(String[] args) {
 //		List<ParseResult> results = IguanaRunner.builder(grammar, Nonterminal.withName("StatementExpression")).addString("logger.info(\"Activator.start()\")").build().run();
 		
-//		System.out.println(originalGrammar.getNonterminals().size());
-//		List<RunResult> results = IguanaRunner.builder(grammar, start)
-//				                              .addFile("files/AMD64RawAssembler.java")
-//				                              .setWarmupCount(3)
-//				                              .setRunCount(5)
-//				                              .setRunGCInBetween(true)
-//				                              .build().run();
+		System.out.println(originalGrammar.getNonterminals().size());
+		List<RunResult> results = IguanaRunner.builder(grammar, start)
+				                              .addFile("files/AMD64RawAssembler.java")
+				                              .setWarmupCount(3)
+				                              .setRunCount(5)
+				                              .setRunGCInBetween(true)
+				                              .build().run();
 
 //		System.out.println(results);
-		List<RunResult> results = IguanaRunner.builder(grammar, start)
-				                                .setWarmupCount(3)
-				                                .setRunCount(5)
-				                                .setRunGCInBetween(true)
-				                                .setLimit(20)
-				                                .addDirectory(sourceDir, "java", true)
-				                                .build()
-				                                .run();
+//		List<RunResult> results = IguanaRunner.builder(grammar, start)
+//				                                .setWarmupCount(3)
+//				                                .setRunCount(5)
+//				                                .setRunGCInBetween(true)
+//				                                .setLimit(20)
+//				                                .addDirectory(sourceDir, "java", true)
+//				                                .build()
+//				                                .run();
 		
 //		System.out.println(results);
 		
