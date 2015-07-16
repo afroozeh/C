@@ -1,12 +1,12 @@
 package org.iguana;
 
 import java.io.File;
+import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 import org.iguana.grammar.Grammar;
 import org.iguana.grammar.precedence.OperatorPrecedence;
-import org.iguana.grammar.symbol.Character;
-import org.iguana.grammar.symbol.Epsilon;
 import org.iguana.grammar.symbol.Nonterminal;
 import org.iguana.grammar.symbol.Start;
 import org.iguana.grammar.transformation.DesugarPrecedenceAndAssociativity;
@@ -16,13 +16,14 @@ import org.iguana.parser.ParseResult;
 import org.iguana.util.IguanaRunner;
 import org.iguana.util.RunResult;
 import org.iguana.util.RunResults;
+import org.iguana.util.SuccessResult;
 
 public class Java {
 	
-	private static Grammar originalGrammar = Grammar.load(new File("grammar/JavaNaturalCharLevel"));
-//	private static Grammar grammar = new LayoutWeaver().transform(new DesugarPrecedenceAndAssociativity().transform(new EBNFToBNF().transform(originalGrammar)));
+	private static Grammar originalGrammar = Grammar.load(new File("grammar/JavaNaturalContextAware"));
+	private static Grammar grammar = new LayoutWeaver().transform(new DesugarPrecedenceAndAssociativity().transform(new EBNFToBNF().transform(originalGrammar)));
 //	private static Grammar grammar = new LayoutWeaver().transform(new EBNFToBNF().transform(originalGrammar));
-	private static Grammar grammar = new LayoutWeaver().transform(new OperatorPrecedence(originalGrammar.getPrecedencePatterns(), originalGrammar.getExceptPatterns()).transform(new EBNFToBNF().transform(originalGrammar)));
+//	private static Grammar grammar = new LayoutWeaver().transform(new OperatorPrecedence(originalGrammar.getPrecedencePatterns(), originalGrammar.getExceptPatterns()).transform(new EBNFToBNF().transform(originalGrammar)));
 	
 	private static Start start = grammar.getStartSymbol(Nonterminal.withName("CompilationUnit"));
 	
@@ -44,27 +45,24 @@ public class Java {
 
 //		System.out.println(results);
 		
-		System.out.println(grammar);
+//		System.out.println(grammar);
 		
 		List<RunResult> results = IguanaRunner.builder(grammar, start)
-				                              .setWarmupCount(0)
-				                              .setRunCount(1)
-				                              .setRunGCInBetween(false)
-				                              .setLimit(20)
+				                              .setWarmupCount(3)
+				                              .setRunCount(5)
+//				                              .setRunGCInBetween(false)
+//				                              .setLimit(20)
 				                              .addDirectory(jdk1_7, "java", true)
-//				                              .addDirectory(slf4j, "java", true)
-//				                              .addDirectory(junit, "java", true)
+				                              .addDirectory(slf4j, "java", true)
+				                              .addDirectory(junit, "java", true)
 //				                              .addFile("files/Test.java")
 				                              .build()
 				                              .run();
 		
-//		System.out.println(results);
-		
-//		System.out.println(RunResults.format(results));
-
-		System.out.println(RunResults.format(RunResults.groupByInput(results)));
-		
-//		IguanaRunner.builder(grammar, Nonterminal.withName("DecimalIntegerLiteral")).addString("84").build().run();
+		System.out.println(RunResults.format(results));
+		Map<URI, SuccessResult> groupByInput = RunResults.groupByInput(results);
+		System.out.println(RunResults.format(groupByInput));
+		System.out.println(RunResults.summary(groupByInput));
 	}
 
 }

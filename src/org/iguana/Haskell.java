@@ -1,7 +1,9 @@
 package org.iguana;
 
 import java.io.File;
+import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 import org.iguana.grammar.Grammar;
 import org.iguana.grammar.symbol.Nonterminal;
@@ -13,10 +15,11 @@ import org.iguana.grammar.transformation.LayoutWeaver;
 import org.iguana.util.IguanaRunner;
 import org.iguana.util.RunResult;
 import org.iguana.util.RunResults;
+import org.iguana.util.SuccessResult;
 
 public class Haskell {
 	
-	private static Grammar originalGrammar = Grammar.load(new File("grammar/HaskellDDCharLevel"));
+	private static Grammar originalGrammar = Grammar.load(new File("grammar/HaskellDDContextAware"));
 
 	private static Grammar grammar;
 	
@@ -58,6 +61,9 @@ public class Haskell {
                 .run();		
 		
 		System.out.println(RunResults.format(results));
+		Map<URI, SuccessResult> groupByInput = RunResults.groupByInput(results);
+		System.out.println(RunResults.format(groupByInput));
+		System.out.println(RunResults.summary(groupByInput));
 	}
 
 }
