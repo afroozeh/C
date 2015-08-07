@@ -14,7 +14,7 @@ import org.iguana.grammar.transformation.EBNFToBNF;
 import org.iguana.grammar.transformation.LayoutWeaver;
 import org.iguana.util.IguanaRunner;
 import org.iguana.util.RunResult;
-import org.iguana.util.RunResults;
+import org.iguana.util.RunResultUtil;
 import org.iguana.util.SuccessResult;
 
 public class Haskell {
@@ -49,21 +49,22 @@ public class Haskell {
 	
 	public static void main(String[] args) {
 		List<RunResult> results = IguanaRunner.builder(grammar, start)
-                .setWarmupCount(0)
-                .setRunCount(1)
+                .setWarmupCount(3)
+                .setRunCount(5)
                 .setRunGCInBetween(false)
 //                .setLimit(20)
                 .addDirectory(ghc, "hs", true)
                 .addDirectory(cabal, "hs", true)
                 .addDirectory(fay, "hs", true)
                 .addDirectory(git_annex, "hs", true)
+//                .addFile("files/Test.hs")
                 .build()
                 .run();		
 		
-		System.out.println(RunResults.format(results));
-		Map<URI, SuccessResult> groupByInput = RunResults.groupByInput(results);
-		System.out.println(RunResults.format(groupByInput));
-		System.out.println(RunResults.summary(groupByInput));
+		System.out.println(RunResultUtil.format(results));
+		Map<URI, SuccessResult> groupByInput = RunResultUtil.groupByInput(results);
+		System.out.println(RunResultUtil.format(groupByInput));
+		System.out.println(RunResultUtil.summary(groupByInput));
 	}
 
 }

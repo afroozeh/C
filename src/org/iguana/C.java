@@ -10,7 +10,7 @@ import org.iguana.grammar.transformation.EBNFToBNF;
 import org.iguana.grammar.transformation.LayoutWeaver;
 import org.iguana.util.IguanaRunner;
 import org.iguana.util.RunResult;
-import org.iguana.util.RunResults;
+import org.iguana.util.RunResultUtil;
 
 public class C {
 	
@@ -20,7 +20,7 @@ public class C {
 	
 	public static void main(String[] args) {
 		List<RunResult> results = IguanaRunner.builder(grammar, start).addFile("files/Test.c").build().run();
-		System.out.println(RunResults.format(results));
+		System.out.println(RunResultUtil.format(results));
 	}
 
 }

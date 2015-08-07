@@ -12,12 +12,12 @@ import org.iguana.grammar.transformation.EBNFToBNF;
 import org.iguana.grammar.transformation.LayoutWeaver;
 import org.iguana.util.IguanaRunner;
 import org.iguana.util.RunResult;
-import org.iguana.util.RunResults;
+import org.iguana.util.RunResultUtil;
 import org.iguana.util.SuccessResult;
 
 public class CSharp {
 	
-	private static Grammar originalGrammar = Grammar.load(new File("grammar/CSharpPreprocessorContextAware"));
+	private static Grammar originalGrammar = Grammar.load(new File("grammar/CSharpPreprocessorCharLevel"));
 	private static Grammar grammar = new LayoutWeaver().transform(new EBNFToBNF().transform(originalGrammar));
 	private static Start start = grammar.getStartSymbol(Nonterminal.withName("CompilationUnit"));
 	
@@ -26,13 +26,15 @@ public class CSharp {
 	private static String entityFramework = "/Users/aliafroozeh/corpus/CSharp/EntityFramework-7.0.0-beta5";
 	
 	public static void main(String[] args) {
-//		System.out.println(originalGrammar.getNonterminals().size());
+		System.out.println(originalGrammar.getNonterminals().size());
+		System.out.println(originalGrammar.getRules().size());
+		
 		List<RunResult> results = IguanaRunner.builder(grammar, start)
                 .setWarmupCount(3)
-                .setRunCount(5)
+                .setRunCount(7)
 //                .setRunGCInBetween(true)
-//                .setLimit(10)
-//                .ignore("/Users/aliafroozeh/corpus/CSharp/roslyn/Src/Compilers/VisualBasic/Test/Semantic/Binding/T_1556342.cs")
+                .setLimit(100)
+                .ignore("/Users/aliafroozeh/corpus/CSharp/roslyn/Src/Compilers/VisualBasic/Test/Semantic/Binding/T_1556342.cs")
                 .addDirectory(roslyn, "cs", true)
                 .addDirectory(entityFramework, "cs", true)
                 .addDirectory(mvc, "cs", true)
@@ -41,10 +43,10 @@ public class CSharp {
                 .run();
 		
 //		System.out.println(results);
-		System.out.println(RunResults.format(results));
-		Map<URI, SuccessResult> groupByInput = RunResults.groupByInput(results);
-		System.out.println(RunResults.format(groupByInput));
-		System.out.println(RunResults.summary(groupByInput));
+		System.out.println(RunResultUtil.format(results));
+		Map<URI, SuccessResult> groupByInput = RunResultUtil.groupByInput(results);
+		System.out.println(RunResultUtil.format(groupByInput));
+		System.out.println(RunResultUtil.summary(groupByInput));
 	}
 	
 

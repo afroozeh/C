@@ -15,15 +15,15 @@ import org.iguana.grammar.transformation.LayoutWeaver;
 import org.iguana.parser.ParseResult;
 import org.iguana.util.IguanaRunner;
 import org.iguana.util.RunResult;
-import org.iguana.util.RunResults;
+import org.iguana.util.RunResultUtil;
 import org.iguana.util.SuccessResult;
 
 public class Java {
 	
-	private static Grammar originalGrammar = Grammar.load(new File("grammar/JavaNaturalContextAware"));
-	private static Grammar grammar = new LayoutWeaver().transform(new DesugarPrecedenceAndAssociativity().transform(new EBNFToBNF().transform(originalGrammar)));
+	private static Grammar originalGrammar = Grammar.load(new File("grammar/JavaNaturalCharLevel"));
+//	private static Grammar grammar = new LayoutWeaver().transform(new DesugarPrecedenceAndAssociativity().transform(new EBNFToBNF().transform(originalGrammar)));
 //	private static Grammar grammar = new LayoutWeaver().transform(new EBNFToBNF().transform(originalGrammar));
-//	private static Grammar grammar = new LayoutWeaver().transform(new OperatorPrecedence(originalGrammar.getPrecedencePatterns(), originalGrammar.getExceptPatterns()).transform(new EBNFToBNF().transform(originalGrammar)));
+	private static Grammar grammar = new LayoutWeaver().transform(new OperatorPrecedence(originalGrammar.getPrecedencePatterns(), originalGrammar.getExceptPatterns()).transform(new EBNFToBNF().transform(originalGrammar)));
 	
 	private static Start start = grammar.getStartSymbol(Nonterminal.withName("CompilationUnit"));
 	
@@ -59,10 +59,13 @@ public class Java {
 				                              .build()
 				                              .run();
 		
-		System.out.println(RunResults.format(results));
-		Map<URI, SuccessResult> groupByInput = RunResults.groupByInput(results);
-		System.out.println(RunResults.format(groupByInput));
-		System.out.println(RunResults.summary(groupByInput));
+		System.out.println(results);
+
+		
+		System.out.println(RunResultUtil.format(results));
+		Map<URI, SuccessResult> groupByInput = RunResultUtil.groupByInput(results);
+		System.out.println(RunResultUtil.format(groupByInput));
+		System.out.println(RunResultUtil.summary(groupByInput));
 	}
 
 }
