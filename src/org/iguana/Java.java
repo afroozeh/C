@@ -12,7 +12,6 @@ import org.iguana.grammar.symbol.Start;
 import org.iguana.grammar.transformation.DesugarPrecedenceAndAssociativity;
 import org.iguana.grammar.transformation.EBNFToBNF;
 import org.iguana.grammar.transformation.LayoutWeaver;
-import org.iguana.parser.ParseResult;
 import org.iguana.util.IguanaRunner;
 import org.iguana.util.RunResult;
 import org.iguana.util.RunResultUtil;
@@ -20,10 +19,15 @@ import org.iguana.util.SuccessResult;
 
 public class Java {
 	
-	private static Grammar originalGrammar = Grammar.load(new File("grammar/JavaSpecificationCharLevel"));
-//	private static Grammar grammar = new LayoutWeaver().transform(new DesugarPrecedenceAndAssociativity().transform(new EBNFToBNF().transform(originalGrammar)));
-//	private static Grammar grammar = new LayoutWeaver().transform(new EBNFToBNF().transform(originalGrammar));
-	private static Grammar grammar = new LayoutWeaver().transform(new OperatorPrecedence(originalGrammar.getPrecedencePatterns(), originalGrammar.getExceptPatterns()).transform(new EBNFToBNF().transform(originalGrammar)));
+	private static final DesugarPrecedenceAndAssociativity DESUGAR_PRECEDENCE_AND_ASSOCIATIVITY = new DesugarPrecedenceAndAssociativity();
+	static { DESUGAR_PRECEDENCE_AND_ASSOCIATIVITY.setOP2(); }
+	
+	private static Grammar spcificationGrammar = Grammar.load(new File("grammar/JavaSpecificationCharLevel"));
+	private static Grammar naturalGrammar = Grammar.load(new File("grammar/JavaNaturalContextAware"));
+	
+	private static Grammar grammar = new LayoutWeaver().transform(DESUGAR_PRECEDENCE_AND_ASSOCIATIVITY.transform(new EBNFToBNF().transform(naturalGrammar)));
+//	private static Grammar grammar = new LayoutWeaver().transform(new EBNFToBNF().transform(spcificationGrammar));
+//	private static Grammar grammar = new LayoutWeaver().transform(new OperatorPrecedence(naturalGrammar.getPrecedencePatterns(), naturalGrammar.getExceptPatterns()).transform(new EBNFToBNF().transform(naturalGrammar)));
 	
 	private static Start start = grammar.getStartSymbol(Nonterminal.withName("CompilationUnit"));
 	
@@ -49,9 +53,9 @@ public class Java {
 		
 		List<RunResult> results = IguanaRunner.builder(grammar, start)
 				                              .setWarmupCount(3)
-				                              .setRunCount(5)
+				                              .setRunCount(7)
 //				                              .setRunGCInBetween(false)
-//				                              .setLimit(20)
+				                              .setLimit(20)
 				                              .addDirectory(jdk1_7, "java", true)
 				                              .addDirectory(slf4j, "java", true)
 				                              .addDirectory(junit, "java", true)

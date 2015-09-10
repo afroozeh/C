@@ -33,7 +33,7 @@ public class CSharp {
                 .setWarmupCount(3)
                 .setRunCount(7)
 //                .setRunGCInBetween(true)
-                .setLimit(100)
+//                .setLimit(200)
                 .ignore("/Users/aliafroozeh/corpus/CSharp/roslyn/Src/Compilers/VisualBasic/Test/Semantic/Binding/T_1556342.cs")
                 .addDirectory(roslyn, "cs", true)
                 .addDirectory(entityFramework, "cs", true)
