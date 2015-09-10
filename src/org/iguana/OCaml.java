@@ -22,16 +22,15 @@ public class OCaml {
 	private static final DesugarPrecedenceAndAssociativity DESUGAR_PRECEDENCE_AND_ASSOCIATIVITY = new DesugarPrecedenceAndAssociativity();
 	static { DESUGAR_PRECEDENCE_AND_ASSOCIATIVITY.setOP2(); }
 	
-	private static Grammar originalGrammar = Grammar.load(new File("grammar/OCamlCharLevelDD"));
-	private static Grammar originalDDGrammar = Grammar.load(new File("grammar/OCamlCharLevelDD"));
+	private static Grammar originalGrammar = Grammar.load(new File("grammar/OCamlContextAwareDD"));
 	
-	private static Grammar grammar = new LayoutWeaver().transform(DESUGAR_PRECEDENCE_AND_ASSOCIATIVITY.transform(new EBNFToBNF().transform(originalDDGrammar)));
+	private static Grammar grammar = new LayoutWeaver().transform(DESUGAR_PRECEDENCE_AND_ASSOCIATIVITY.transform(new EBNFToBNF().transform(originalGrammar)));
 //	private static Grammar grammar = new LayoutWeaver().transform(new EBNFToBNF().transform(originalGrammar));
 //	private static Grammar grammar = new LayoutWeaver().transform(new OperatorPrecedence(originalGrammar.getPrecedencePatterns(), originalGrammar.getExceptPatterns()).transform(new EBNFToBNF().transform(originalGrammar)));
 	
 	private static Start start = grammar.getStartSymbol(Nonterminal.withName("CompilationUnit"));
 	
-	private static String ocaml = "/Users/aliafroozeh/corpus/ocaml";
+	private static String ocaml = "/Users/afroozeh/corpus/ocaml";
 	
 	public static void main(String[] args) {
 				
@@ -51,10 +50,10 @@ public class OCaml {
 //		System.out.println(grammar);
 		
 		List<RunResult> results = IguanaRunner.builder(grammar, start)
-				                              .setWarmupCount(5)
-				                              .setRunCount(10)
+//				                              .setWarmupCount(5)
+				                              .setRunCount(1)
 //				                              .setRunGCInBetween(false)
-				                              .setLimit(50)
+//				                              .setLimit(10)
 				                              .addDirectory(ocaml, "ml", true)
 //				                              .addFile("files/Test.ml")
 				                              .build()

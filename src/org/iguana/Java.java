@@ -31,7 +31,7 @@ public class Java {
 	
 	private static Start start = grammar.getStartSymbol(Nonterminal.withName("CompilationUnit"));
 	
-	private static String slf4j = "/Users/aliafroozeh/corpus/Java/slf4j-1.7.12";
+	private static String slf4j = "/Users/afroozeh/corpus/Java/slf4j-1.7.12";
 	private static String junit = "/Users/aliafroozeh/corpus/Java/junit-r4.12";
 	private static String jdk1_7 = "/Users/aliafroozeh/corpus/Java/jdk1.7.0_60-b19";
 	
@@ -52,13 +52,14 @@ public class Java {
 //		System.out.println(grammar);
 		
 		List<RunResult> results = IguanaRunner.builder(grammar, start)
-				                              .setWarmupCount(3)
-				                              .setRunCount(7)
+//				                              .setWarmupCount(3)
+				                              .setRunCount(1)
 //				                              .setRunGCInBetween(false)
-				                              .setLimit(20)
-				                              .addDirectory(jdk1_7, "java", true)
-				                              .addDirectory(slf4j, "java", true)
-				                              .addDirectory(junit, "java", true)
+//				                              .setLimit(20)
+				                              .addFile("files/Test.java")
+//				                              .addDirectory(jdk1_7, "java", true)
+//				                              .addDirectory(slf4j, "java", true)
+//				                              .addDirectory(junit, "java", true)
 //				                              .addFile("files/Test.java")
 				                              .build()
 				                              .run();
